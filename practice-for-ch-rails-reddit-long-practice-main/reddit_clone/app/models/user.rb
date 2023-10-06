@@ -7,6 +7,13 @@ class User < ApplicationRecord
     validates :username, :session_token, uniqueness: true
     validates :password, length: {minimum: 6, allow_nil: true}
 
+    has_many :subs,
+        primary_key: :id,
+        primary_key: :moderator_id,
+        class_name: :Sub,
+        inverse_of: :moderator,
+        dependent: :destroy
+
     def self.find_by_credentials(username, password)
         @user = User.find_by(username: username)
 
